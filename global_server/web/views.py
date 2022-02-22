@@ -35,6 +35,7 @@ def check_registration(request):
             except u.DoesNotExist:    
                 return JsonResponse({"Message":"ERROR", "error":-2}, status=403)
             dev.owner = user
+            dev.ip_address = request.META.get('REMOTE_ADDR')
             dev.save()
             return JsonResponse({"Message": "Device has been registered"},status=200)
         
