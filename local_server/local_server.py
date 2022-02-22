@@ -31,7 +31,7 @@ except OSError:
 s.listen(5)    
 print("socket is listening") 
 
-
+#NEVER DOUBT YOURSELF
 while True:
     c, addr = s.accept()    
     print('Got connection from', addr)
@@ -42,4 +42,5 @@ while True:
         c.send("Great!".encode())
         print("data sent")
     else:
-        print("data not sent")    
+        print("data not sent")
+        
