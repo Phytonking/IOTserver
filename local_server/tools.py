@@ -33,7 +33,7 @@ def find_nearest_server():
         average_ping = 0.0
         for x in range(0,65):
             try:
-                result = subprocess.run(['ping', '-c', '1', y.split()[0]],text=True,capture_output=True,check=True)
+                result = subprocess.run(['ping', '-c', '1', y],text=True,capture_output=True,check=True)
                 for line in result.stdout.splitlines():
                     #print(line)
                     if "icmp_seq" in line:
