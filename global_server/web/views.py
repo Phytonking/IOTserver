@@ -27,8 +27,11 @@ def check_registration(request):
             return JsonResponse({"Message":"ERROR", "error":-3}, status=403)
             
         try:
-            owned_by=dev.owner
-            return JsonResponse({"Message":"device is active on server"}, status=200)
+            if dev.owner.logged_in:
+                owned_by=dev.owner
+                return JsonResponse({"Message":"device is active on server"}, status=200)
+            else:
+                return JsonResponse({"Message":"Error", "error":0}, status=404)   
         except dev.owner == None: #register device 
             try:
                 user = u.objects.get(username=username, password=password)
