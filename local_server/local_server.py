@@ -23,7 +23,9 @@ try:
 except NameError:
     print("HOST NOT FOUND: Redirecting to local host")
     s.bind(("", port))
-    print(f"Running on 127.0.0.1:{port}")  
+    print(f"Running on 127.0.0.1:{port}") 
+except OSError:
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)     
  
 # put the socket into listening mode
 s.listen(5)    

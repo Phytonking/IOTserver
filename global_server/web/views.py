@@ -9,7 +9,7 @@ from hashlib import *
 
 
 def index(request):
-    return JsonResponse({"Message": "Welcome to the global server"})
+    return JsonResponse({"Message": "Welcome to the global server"}, status=200)
 
 @csrf_exempt
 def check_registration(request):
@@ -75,7 +75,7 @@ def recieve(request):
         if user.password != Password:
             return JsonResponse({"Message":"Error", "error":1}, status=403)    
         if dev.owner.logged_in != True:
-            return JsonResponse({"Message":"Error", "error":0}, status=404)    
+            return JsonResponse({"Message":"Error", "error":0}, status=403)    
         variables = device_variables.objects.filter(from_device=dev)
         statuses = device_statuses.objects.filter(for_device=dev)
         current_status = current_device_status.objects.get(for_device=dev)
