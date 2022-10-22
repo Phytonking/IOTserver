@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>PythonIOT</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://kit.fontawesome.com/c12f7044cb.js" crossorigin="anonymous"></script>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: black;
+}
+
+/* Style the header */
+header {
+  background-color: black;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+/* Create two columns/boxes that floats next to each other */
+nav {
+  float: left;
+  width: 30%; /* only for demonstration, should be removed */
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 70%;
+}
+
+/* Clear floats after the columns */
+section::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the footer */
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 600px) {
+  nav, article {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+#sidebarButton{
+    text-align: center;
+    width: 100%;
+    height: 200%;
+    color: black;
+}
+#side_logo {
+    color: white;
+}
+.content{
+    color:white;
+}
+h2, h1 ,p{
+  color:white;
+}
+h3{
+  color:black;
+}
+</style>
+</head>
+<body>
+
+<h3 id="side_logo">PythonIOT</h3>
+<header>
+  <h2>{% block header %}{% endblock %}</h2>
+</header>
+
+<section>
+  <nav>
+    <ul>
+      <li><a href="{% url 'web:index' %}"><button id="sidebarButton">
+          <div >
+            <i class="fa-solid fa-house"></i>
+            <h3>Home</h3>
+          </div>
+        </button></a></li>
+      <li><a href=""><button id="sidebarButton">
+          <div>
+              <i class="fa-solid fa-file"></i>
+              <h3>About</h3>
+          </div>
+        </button></a></li>
+      {% if User.logged_in %}  
+      <li><a href="{% url 'web:device' sess=session_id %}"><button id="sidebarButton">
+        <div >
+            <i class="fa-solid fa-sitemap"></i>
+            <h3>Devices</h3>
+        </div>
+      </button></a></li>
+      
+        <li><a href="{% url 'web:logout' session=session_id %}"><button id="sidebarButton">
+            <div>
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <h3>Logout</h3>
+            </div>
+        </button></a></li>
+      {% else %} 
+        <li><a href="{% url 'web:login' %}"><button id="sidebarButton">
+            <div>
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <h3>Login/Register</h3>
+            </div>
+        </button></a></li>
+      {% endif %}  
+    </ul>
+  </nav>
+  
+  <article>
+    {% block content %}{% endblock %}
+  </article>
+</section>
+
+<footer>
+  <p>2022 PythonIOT</p>
+</footer>
+
+</body>
+</html>
+

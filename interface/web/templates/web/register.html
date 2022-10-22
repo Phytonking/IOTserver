@@ -1,0 +1,30 @@
+{% extends 'web/layout.html' %} 
+
+{% block header %} 
+    <h4>Login</h4>
+{% endblock %}
+
+{% block content %} 
+    <h2 class="content">Register</h2>
+    <style>
+        input {
+            width: 35%;
+            height: 10%;
+        }
+        .error{
+            color: red;
+        }
+    </style>
+    <h3>Already have an account? <span><a href="{% url 'web:login' %}"><button>Login</button></a></span> </h3>
+    <form action="{% url 'web:register' %}" method="post">
+        {% csrf_token %}
+        <input name="firstName" placeholder="First Name" type="text" required><br>
+        <input name="lastName" placeholder="Last Name" type="text" required><br>
+        <input name="email" placeholder="Email" type="email" required><br>
+        <input name="username" placeholder="Username" type="text" required><br>
+        <input name="password" placeholder="Password" type="password" required><br>
+        <input name="cPassword" placeholder="Confirm Password" type="password" required><br>
+        <input type="submit">
+    </form>
+    <h3 class="error">{{error}}</h3>
+{% endblock %}

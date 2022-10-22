@@ -1,12 +1,37 @@
 #from flask import flask
 import socket
+from commands import command_center
 from tools import *
 import boot_up
 import sys
-
+import os
+import variables
+import time
 
 boot_up.startup()
+running = True
+#check variables and statuses
+print("PYTHONIOT SYSTEM v.0.0.1 ")
+while running:
+    inp = input(">>> ")
+    command_center(inp)
 
+            
+    
+
+        
+
+
+
+
+
+
+
+
+
+
+
+"""
 try:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("Server socket has been activated")
@@ -44,3 +69,4 @@ while True:
     else:
         print("data not sent")
         
+"""

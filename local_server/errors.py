@@ -11,3 +11,7 @@ class NoServerAvailableError(Exception):
 
 class AccountNotFoundError(Exception):
     pass    
+
+
+class NotLoggedInError(Exception):
+    pass

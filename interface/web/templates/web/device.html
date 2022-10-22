@@ -1,0 +1,50 @@
+{% extends 'web/layout.html' %} 
+
+{% block header %} 
+    <h4>Devices</h4>
+{% endblock %}
+
+{% block content %} 
+    <h2 class="content">Devices</h2>
+    <style>
+        .dev{
+            border-style: solid;
+            border-width: 10px;
+        }
+        #new_device{
+            display:"none";
+        }
+    </style>
+    {% if deviceCount == 0 %} 
+        <p>No Devices Registered</p>
+    {% else %}
+        {% for k in devices %} 
+            <div class="dev">
+                <h1>{{k.device_name}}</h1>
+                <p>{{k.device_id}}</p>
+                <p>{{k.ip_address}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <script>
+        function show_form() {
+            var k = document.querySelector("#new_device").style.display;
+            console.log(k);
+            if (k == "none"){
+                document.querySelector("#new_device").style.display = "block";
+            } else {
+                document.querySelector("#new_device").style.display = "none";
+            }
+        }
+    </script>
+    <a href="javascript:show_form()"><button>Add Device</button></a><br><br>
+    <div id="new_device" style="display: none;">
+        <form action="{% url 'web:device' sess=session_id %}" method="POST">
+            {% csrf_token %}
+            <input name="device_id" type="text" placeholder="Device ID" required><br>
+            <input name="name" type="text" placeholder = "Name" required><br>
+            <input name="IP_address" type="text" placeholder="IP Address"><br>
+            <input type="submit">
+        </form>
+    </div>
+{% endblock %}

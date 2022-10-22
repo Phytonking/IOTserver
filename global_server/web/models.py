@@ -20,10 +20,17 @@ class device(models.Model):
     owner = models.ForeignKey(u, on_delete=models.CASCADE, related_name='linked_account')
     ip_address = models.GenericIPAddressField(null=True)
     #current_device_status = models.ForeignKey(device_statuses, on_delete=models.CASCADE, related_name='stat', null=True)
+    def __str__(self):
+        return self.device_id
+
+
 
 class device_statuses(models.Model):
     status_name = models.TextField()
     for_device = models.ForeignKey(device, on_delete=models.CASCADE, related_name='dev')
+
+    def __str__(self):
+        return self.status_name
 
 class device_variables(models.Model):
     from_device = models.ForeignKey(device, on_delete=models.CASCADE, related_name='data')
@@ -31,6 +38,9 @@ class device_variables(models.Model):
     value = models.TextField(null=True)
     value_type = models.TextField(null=True)
     last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.variable_name
 
 class current_device_status(models.Model):
     for_device = models.ForeignKey(device, on_delete=models.CASCADE, related_name="device")

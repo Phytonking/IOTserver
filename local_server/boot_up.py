@@ -1,5 +1,5 @@
 #makes sure all parameters are set to run.
-import tools
+from tools import *
 import subprocess
 import json
 from errors import *
@@ -8,7 +8,7 @@ information = {}
 
 def set_global_server():
     print("Preparing global server conncections.")
-    server = tools.find_nearest_server()
+    server = find_nearest_server()
     if server == None:
        raise NoServerAvailableError()
     else:
@@ -43,10 +43,10 @@ def login_credentials():
         #set device_id
         d_id = input("Set Device ID: ")
         information.update({"device_id":d_id})
-        tools.update_config(information)
+        update_config(information)
     #send message to global servers about login info
-    tools.grab_config() #updates information in tools.py
-    tools.check_if_registered()
+    grab_config() #updates information in tools.py
+    check_if_registered()
           
         
     

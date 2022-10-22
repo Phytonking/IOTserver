@@ -4,3 +4,5 @@ from web.models import *
 admin.site.register(u)
 admin.site.register(device)
 admin.site.register(device_variables)
+admin.site.register(device_statuses)
+admin.site.register(current_device_status)

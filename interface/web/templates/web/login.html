@@ -1,0 +1,26 @@
+{% extends 'web/layout.html' %} 
+
+{% block header %} 
+    <h4>Login</h4>
+{% endblock %}
+
+{% block content %} 
+    <h2 class="content">Login</h2>
+    <style>
+        input {
+            width: 35%;
+            height: 10%;
+        }
+        .error{
+            color: red;
+        }
+    </style>
+    <h3>Need an account? <span><a href="{% url 'web:register' %}"><button>Create an account</button></a></span> </h3>
+    <form action="{% url 'web:login' %}" method="post">
+        {% csrf_token %}
+        <input name="username" placeholder="username" type="text" required><br>
+        <input name="password" placeholder="password" type="password" required><br>
+        <input type="submit">
+    </form>
+    <h3 class="error">{{error}}</h3>
+{% endblock %}
