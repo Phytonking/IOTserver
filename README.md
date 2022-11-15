@@ -14,7 +14,7 @@ A client/device server set up is not able to send and recieve data from a middle
 With that, users can then use the interface website to access data about their client from the global server as data is sent in real time. 
 
 `/local_server` - contains code for the client/device. 
-`/global_server' - has the code for the middleman global server.
+`/global_server` - has the code for the middleman global server.
 `/interface` - has the code for the web interface users can access. 
 
 Devices are registered with a unique ID stored within the global_server and the interface which is used to track each device specifically. 
