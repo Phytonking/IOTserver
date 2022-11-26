@@ -137,11 +137,19 @@ def recieve(request):
         #transfer new data across other global servers as nessesary
         return JsonResponse({"Message":"Data Recieved Successfully"}, status=200)
 
-#send information out to the cient
+#send information out to the interface
+@csrf_exempt
 def send(request):
     #return "SEND"
     if request.method == "POST":
-        return JsonResponse({"Message":"GET REQUESTS ONLY"}, status=200)
+        data = json.loads(request.body)
+        if data["action"] == "new_user":
+            new_user = u(first_name = data["first_name"], last_name = data["last_name"], email = data["email"], username=data["username"], password = data["password"], account_user_serial_key = data['serial'], account_server_origin=data["origin"], logged_in=False)
+            new_user.save()
+        elif data["action"] == "new_device":
+            new_device = device(device_id=data["device_id"], device_name=data["device_name"], owner=u.objects.get(username=data["owner"]), ip_address=data["ip"])
+            new_device.save()
+        return JsonResponse({"Message":"Data Recieved Successfully"}, status=200)
     if request.method == "GET":
     #refine data
         data = json.loads(request.body)
@@ -154,7 +162,7 @@ def send(request):
         if user.password != Password:
             return JsonResponse({"Message":"Error", "error":1}, status=403)
     # get device
-        dev = device.objects.get()
+        dev = device.objects.get(device_id=data["device_id"])
     #find data
         variables = device_variables.objects.filter(from_device=dev)
         statuses = device_statuses.objects.filter(for_device=dev)

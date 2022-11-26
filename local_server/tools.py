@@ -32,7 +32,9 @@ def get_config():
 
 def find_nearest_server():
     servers_raw = open("servers.txt","rt")
-    servers = servers_raw.read().split("\n")   
+    servers = servers_raw.read().split("\n")
+    if "" in servers:
+        servers.remove("")
     print(servers) 
     average_ping = 0.0
     server_ping_averages = []

@@ -51,6 +51,7 @@ def register_view(request):
             if password == cPassword:
                 user.logged_in = True
                 user.save()
+                send_user_to_global(user)
                 return HttpResponseRedirect(reverse("web:index"))
             else:
                 return render(request, "web/register.html",{"error": "passwords dont match"})
@@ -60,21 +61,22 @@ def register_view(request):
 def logout_view(request, session):
     l = logout_session(session)
     if l:
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("web:index"))
     else:
         return "Failed to logout"
 
-def device_view(request, sess):
+def device_view(request, sess): #MENU
     User = session.objects.get(session_id=sess).user
     if request.method == "GET":
-        return render(request, "web/device.html", {"User":User, "devices": device.objects.filter(owner=User), "session_id":sess, "deviceCount":device.objects.filter(owner=User).count()})
+        return render(request, "web/device_menu.html", {"User":User, "devices": device.objects.filter(owner=User), "session_id":sess, "deviceCount":device.objects.filter(owner=User).count()})
     if request.method == "POST":
         iden = request.POST["device_id"]
         name = request.POST["name"]
         ip_address = request.POST["IP_address"]
         dev = device(device_id = iden, device_name=name, owner=User, ip_address=ip_address)
         dev.save()
-        return render(request, "web/device.html", {"User":User, "devices": device.objects.filter(owner=User), "session_id":sess, "deviceCount":device.objects.filter(owner=User).count()})
+        send_device_to_global(dev)
+        return render(request, "web/device_menu.html", {"User":User, "devices": device.objects.filter(owner=User), "session_id":sess, "deviceCount":device.objects.filter(owner=User).count()})
 @csrf_exempt
 def sync(request):
     if request.method == "GET":
@@ -88,6 +90,15 @@ def sync(request):
             d = device(device_id = j["device_id"], device_name=j["device_name"], owner=user, ip_address=j["ip_address"])
             d.save()
             return JsonResponse({"Message":"Sync Successful"}, status=200)
+
+def specific_device_view(request,sess, device_id):
+    User = session.objects.get(session_id=sess).user
+    if request.method == "GET":
+        information = pull_from_global(User, device_id)
+        variables = information["variables"]
+        status = information["current_status"]
+        variable_keys = variables.keys()
+        return render(request, "web/device.html", {"User":User, "device": device.objects.get(owner=User, device_id=device_id), "session_id":sess, "variables": variables, "current_status":status, "variable_keys":variable_keys})
         
         
 

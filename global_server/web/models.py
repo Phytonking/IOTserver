@@ -17,7 +17,7 @@ class u(models.Model):
 class device(models.Model):
     device_id = models.TextField()
     device_name = models.TextField()
-    owner = models.ForeignKey(u, on_delete=models.CASCADE, related_name='linked_account')
+    owner = models.ForeignKey(u, on_delete=models.DO_NOTHING, related_name='linked_account')
     ip_address = models.GenericIPAddressField(null=True)
     #current_device_status = models.ForeignKey(device_statuses, on_delete=models.CASCADE, related_name='stat', null=True)
     def __str__(self):
