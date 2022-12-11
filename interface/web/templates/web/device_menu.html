@@ -19,11 +19,13 @@
         <p>No Devices Registered</p>
     {% else %}
         {% for k in devices %} 
-            <div class="dev">
-                <h1>{{k.device_name}}</h1>
-                <p>{{k.device_id}}</p>
-                <p>{{k.ip_address}}</p>
-            </div>
+            <a href="{% url 'web:one_device' sess=session_id deviceId=k.device_id %}">
+                <div class="dev">
+                    <h1>{{k.device_name}}</h1>
+                    <p>{{k.device_id}}</p>
+                    <p>{{k.ip_address}}</p>
+                </div>
+            </a>
         {% endfor %}
     {% endif %}
     <script>

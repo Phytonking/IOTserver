@@ -1,13 +1,19 @@
 {% extends 'web/layout.html' %} 
 
 {% block header %} 
-    <h4>Device - {{device.device_id}}</h4>
+    <h4>Device - {{device}}</h4>
 {% endblock %}
 
 {% block content %} 
+    {% if error %}
+    <div>
+        <h3 style="color:red">Error code: {{error_code}}</h3>
+        <h5 style="color:red">{{error_text}}</h5>
+    </div>
+    {%endif%}
     <div class="w3-container w3-grey">
         {% for x in variable_keys %} 
-            <h4>{{x}}: {{variables[x]}}</h4>
+            <h4>{{x}}: {{variables.x}}</h4>
         {% endfor %}
         <h4>Current_status: {{current_status}}</h4>
     </div>

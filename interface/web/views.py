@@ -91,14 +91,17 @@ def sync(request):
             d.save()
             return JsonResponse({"Message":"Sync Successful"}, status=200)
 
-def specific_device_view(request,sess, device_id):
+def specific_device_view(request, sess, deviceId):
     User = session.objects.get(session_id=sess).user
     if request.method == "GET":
-        information = pull_from_global(User, device_id)
+        information = pull_from_global(User, deviceId)
+        print(list(information.keys()))
+        if 'Error' in list(information.keys()):
+            return render(request, "web/device.html", {"User":User, "device": deviceId, "session_id":sess, "error_code": information["error_code"], "error_text":information["Error"], "error":True}) 
         variables = information["variables"]
         status = information["current_status"]
-        variable_keys = variables.keys()
-        return render(request, "web/device.html", {"User":User, "device": device.objects.get(owner=User, device_id=device_id), "session_id":sess, "variables": variables, "current_status":status, "variable_keys":variable_keys})
+        variable_keys = list(variables.keys())
+        return render(request, "web/device.html", {"User":User, "device": deviceId, "session_id":sess, "variables": variables, "current_status":status, "variable_keys":variable_keys})
         
         
 

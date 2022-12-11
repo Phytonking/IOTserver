@@ -24,13 +24,18 @@ def logout_session(sess):
     except session.DoesNotExist:
         return False
 
-
+global_server="0.0.0.0"
 def send_user_to_global(user):
-    server = "http://192.168.86.198/send"
+    server = f"http://{global_server}/send"
     l = requests.post(server,json={"action":"new_user","first_name":user.first_name,"last_name":user.last_name, "email":user.email, "username":user.username, "password":user.password, "serial":user.account_user_serial_key, "origin":user.account_server_origin, "logged_in":False})
     return l.json()
 
 def send_device_to_global(device):
-    server = "http://192.168.86.198/send"
+    server = f"http://{global_server}/send"
     l = requests.post(server,json={"action":"new_device","device_id":device.device_id, "device_name":device.device_name, "owner": device.owner.username, "ip":device.ip_address})
+    return l.json()
+
+def pull_from_global(User, device):
+    server = f"http://{global_server}/send"
+    l = requests.get(server, json={"username": User.username, "password":User.password, "device_id": device})
     return l.json()

@@ -8,7 +8,7 @@ urlpatterns = [
     path('login',login_view,name="login"),
     path('register',register_view,name="register"),
     path('<str:session>/logout', logout_view, name="logout"),
-    path('<str:session>/device_view/<str:device_id>', specific_device_view, name="one_device"),
+    path('<uuid:sess>/device_view/<str:deviceId>', specific_device_view, name="one_device"),
     # API
     path("syncup", sync, name="syncup")
 ]

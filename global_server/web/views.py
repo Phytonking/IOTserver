@@ -162,10 +162,13 @@ def send(request):
         if user.password != Password:
             return JsonResponse({"Message":"Error", "error":1}, status=403)
     # get device
-        dev = device.objects.get(device_id=data["device_id"])
-    #find data
-        variables = device_variables.objects.filter(from_device=dev)
-        statuses = device_statuses.objects.filter(for_device=dev)
-        current_status = current_device_status.objects.get(for_device=dev)
-    #send_back
-        return JsonResponse({"variables": variables, "current_status":current_status})
+        try:
+            dev = device.objects.get(device_id=data["device_id"])
+        #find data
+            variables = device_variables.objects.filter(from_device=dev)
+            statuses = device_statuses.objects.filter(for_device=dev)
+            current_status = current_device_status.objects.get(for_device=dev)
+        #send_back
+            return JsonResponse({"variables": variables, "current_status":current_status})
+        except device.DoesNotExist:
+            return JsonResponse({"Error": "Device not registered on the server!", "error_code":-1})
