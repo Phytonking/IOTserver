@@ -12,8 +12,13 @@
     </div>
     {%endif%}
     <div class="w3-container w3-grey">
-        {% for x in variable_keys %} 
-            <h4>{{x}}: {{variables.x}}</h4>
+        <style>
+            h4{
+                color:white;
+            }
+        </style>
+        {% for key, value in variables.items %} 
+            <h4>{{key}}: {{value}}</h4>
         {% endfor %}
         <h4>Current_status: {{current_status}}</h4>
     </div>

@@ -12,6 +12,9 @@ class u(models.Model):
     account_user_serial_key = models.TextField(null=True)
     account_server_origin = models.TextField()
     logged_in = models.BooleanField(null=True)
+
+    def __str__(self):
+        return self.username
     
 
 class device(models.Model):

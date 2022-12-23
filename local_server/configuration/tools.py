@@ -3,39 +3,38 @@ import json
 import subprocess
 import os
 import sys
-from errors import *
+from configuration.errors import *
 import re
 
 information = None
 def grab_config():
-    file = open("config.json", "r")
+    file = open("configuration/config.json", "r")
     global information
     information = json.loads(file.read())
 
 def update_config(x):
-    fil = open("config.json", "w")
+    fil = open("configuration/config.json", "w")
     fil.write(json.dumps(x))
     fil.close()
 
 
 def get_data_ID():
-    f = open("config.json", "rt")
+    f = open("configuration/config.json", "rt")
     info = json.loads(f.read())
     print(info["device_id"])
     return info["device_id"]
 
 def get_config():
-    file = open("config.json", "r")
+    file = open("configuration/config.json", "r")
     global information
     information = json.loads(file.read())
     return information    
 
 def find_nearest_server():
-    servers_raw = open("servers.txt","rt")
+    servers_raw = open("configuration/servers.txt","rt")
     servers = servers_raw.read().split("\n")
     if "" in servers:
         servers.remove("")
-    print(servers) 
     average_ping = 0.0
     server_ping_averages = []
     result = None
@@ -85,9 +84,8 @@ def find_nearest_server():
 
 def send_post_to_global(server_route, request_data): #sends the data to global 
     print("Processing data to global servers")
-    print(request_data)
     req = requests.post("http://"+find_nearest_server()+server_route, json=request_data)
-    print(req.json())
+    print(f"Recieved: {req.json()}")
 
 
 
@@ -105,7 +103,7 @@ def connect_to_global():
 def check_if_registered():
     #checks if the server is registered and exists globally. 
     x = connect_to_global()
-    print(information)
+    #print(information)
     if x:
         try:
             request = requests.post("http://"+information["nearest_server"]+'/check_registration', json={"username":information["username"], "password":information["password"], "device_id":information["device_id"]}) #send global request.
@@ -127,7 +125,7 @@ def check_if_registered():
                 login_req = send_post_to_global('/login', {"username": information["username"], "password":information["password"]})
         if request.status_code == 200:
             print(j['Message'])
-
+"""
 def find_variables_and_statuses():
     variables = []
     statuses = []
@@ -154,5 +152,6 @@ def find_variables_and_statuses():
                     statuses.append(infor)
                     continue 
 
-    return [variables, statuses]                     
+    return [variables, statuses]   
+"""                  
 #print(find_nearest_server())

@@ -61,6 +61,7 @@ def login_view(request):
     else:
         return JsonResponse({"Message":"Login"}, status=200)
 
+
 #add new information to this server
 @csrf_exempt
 def recieve(request):
@@ -77,9 +78,11 @@ def recieve(request):
         except web.models.u.DoesNotExist:
             return JsonResponse({"Message":"Error", "error":-2}, status=403)
         if user.password != Password:
-            return JsonResponse({"Message":"Error", "error":1}, status=403)    
+            return JsonResponse({"Message":"Error", "error":1}, status=403)  
+        """  
         if dev.owner.logged_in != True:
             return JsonResponse({"Message":"Error", "error":0}, status=403)    
+        """
         #variables = device_variables.objects.filter(from_device=dev)
         try:
             statuses = web.models.device_statuses.objects.filter(for_device=dev)
@@ -90,16 +93,16 @@ def recieve(request):
         if sender_information["new_variables"] != None:
             for n in sender_information["new_variables"]:
                 print(n)
-                is_it_there = web.models.device_variables.objects.filter(variable_name=n["name"],from_device=dev).count()
+                is_it_there = web.models.device_variables.objects.filter(variable_name=list(n.keys())[0],from_device=dev).count()
                 if is_it_there == 1:
                     continue
                 elif is_it_there > 1:
-                    web.models.device_variables.objects.filter(variable_name=n["name"],from_device=dev).delete()
-                    var = web.models.device_variables(from_device=dev, variable_name=n["name"], value=n["value"], value_type=str(type(n["value"])))
+                    web.models.device_variables.objects.filter(variable_name=list(n.keys())[0],from_device=dev).delete()
+                    var = web.models.device_variables(from_device=dev, variable_name=list(n.keys())[0], value=n[list(n.keys())[0]], value_type=str(type(n[list(n.keys())[0]])))
                     var.save()
                     continue
                 else:
-                    var = web.models.device_variables(from_device=dev, variable_name=n["name"], value=n["value"], value_type=str(type(n["value"])))
+                    var = web.models.device_variables(from_device=dev, variable_name=list(n.keys())[0], value=n[list(n.keys())[0]], value_type=str(type(n[list(n.keys())[0]])))
                     var.save()
                     continue
         #check for new statuses
@@ -115,18 +118,34 @@ def recieve(request):
                     stat.save() 
                 else:
                     stat = web.models.device_statuses(status_name=x, for_device=dev)
-                    stat.save()    
+                    stat.save()
+
+        #check for deleting variables or statuses
+        if sender_information["variables_to_delete"] != None:
+            for y in sender_information["variables_to_delete"]:
+                print(y)
+                try:
+                    vari = web.models.device_variables.objects.get(from_device=dev,variable_name=y)
+                    vari.delete()
+                except web.models.device_variables.DoesNotExist:
+                     return JsonResponse({"Message":"Error", "error":0}, status=403)   
+        if sender_information["statuses_to_delete"] != None:
+            for u in statuses:
+                if u.status_name in sender_information["status"]:
+                    u.delete()
+                    break
+
         #update variable values
         if sender_information["variables_to_update"] != None:
             for y in sender_information["variables_to_update"]:
                 print(y)
                 try:
-                    vari = web.models.device_variables.objects.get(from_device=dev,variable_name=y["name"])
+                    vari = web.models.device_variables.objects.get(from_device=dev,variable_name=list(y.keys())[0])
                     vari.value = y["value"]
                     vari.value_type = str(type(y["value"]))
                     vari.save()
                 except web.models.device_variables.DoesNotExist:
-                     return JsonResponse({"Message":"Error", "error":0}, status=400)   
+                     return JsonResponse({"Message":"Error", "error":0}, status=403)   
         #update current_status
         if sender_information["status"] != None:
             for u in statuses:
@@ -163,12 +182,23 @@ def send(request):
             return JsonResponse({"Message":"Error", "error":1}, status=403)
     # get device
         try:
-            dev = device.objects.get(device_id=data["device_id"])
+            dev = device.objects.get(device_id=str(data["device_id"]))
+            print(dev)
         #find data
-            variables = device_variables.objects.filter(from_device=dev)
+            variables = {}
+            varia = list(device_variables.objects.filter(from_device=dev))
+            print(varia)
+            for x in varia:
+                print(x)
+                variables.update({f"{x.variable_name}": x.value})
             statuses = device_statuses.objects.filter(for_device=dev)
-            current_status = current_device_status.objects.get(for_device=dev)
+            current_stat = str(current_device_status.objects.get(for_device=dev).current_status)
         #send_back
-            return JsonResponse({"variables": variables, "current_status":current_status})
+            
+            print({"variables": variables, "current_status":current_stat})
+            return JsonResponse({"variables": variables, "current_status":current_stat})
+        except current_device_status.DoesNotExist:
+            print({"variables": variables, "current_status": "null"})
+            return JsonResponse({"variables": variables, "current_status": "null"})
         except device.DoesNotExist:
             return JsonResponse({"Error": "Device not registered on the server!", "error_code":-1})

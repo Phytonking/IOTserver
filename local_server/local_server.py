@@ -1,20 +1,26 @@
 #from flask import flask
 import socket
-from commands import command_center
-from tools import *
-import boot_up
+from command_manager import command_center
+from configuration.tools import *
+import configuration.boot_up as BU
 import sys
 import os
-import variables
 import time
+import autonomous
 
-boot_up.startup()
+BU.startup()
 running = True
 #check variables and statuses
 print("PYTHONIOT SYSTEM v.0.0.1 ")
-while running:
-    inp = input(">>> ")
-    command_center(inp)
+if sys.argv[1] == "--commands" or sys.argv[1] == "-c":
+    while running:
+        inp = input(">>> ")
+        command_center(inp)
+elif sys.argv[1] == "--autonomous" or sys.argv[1] == "-a":
+    autonomous.main()
+else:
+    print("Invalid input")
+    print("Run program by using: python3 local_server.py <command-ticker>")
 
             
     

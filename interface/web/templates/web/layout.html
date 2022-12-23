@@ -5,6 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://kit.fontawesome.com/c12f7044cb.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 * {
   box-sizing: border-box;
@@ -96,18 +97,41 @@ h3{
 <section>
   <nav>
     <ul>
-      <li><a href="{% url 'web:index' %}"><button id="sidebarButton">
+      {% if User.logged_in %}
+        <li><a href="{% url 'web:logged_index' sess=session_id %}"><button id="sidebarButton">
+            <div >
+              <i class="fa-solid fa-house"></i>
+              <h3>Home</h3>
+            </div>
+          </button></a></li>
+      {% else %}
+        <li><a href="{% url 'web:index' %}"><button id="sidebarButton">
           <div >
             <i class="fa-solid fa-house"></i>
             <h3>Home</h3>
           </div>
         </button></a></li>
-      <li><a href=""><button id="sidebarButton">
+      {% endif %}
+
+
+      {% if User.logged_in %}
+      <li><a href="{% url 'web:about_logged' sess=session_id %}"><button id="sidebarButton">
           <div>
               <i class="fa-solid fa-file"></i>
               <h3>About</h3>
           </div>
         </button></a></li>
+      {% else %} 
+      <li><a href="{% url 'web:about' %}"><button id="sidebarButton">
+        <div>
+            <i class="fa-solid fa-file"></i>
+            <h3>About</h3>
+        </div>
+      </button></a></li>
+      {% endif %}
+
+
+
       {% if User.logged_in %}  
       <li><a href="{% url 'web:device' sess=session_id %}"><button id="sidebarButton">
         <div >

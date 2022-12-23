@@ -14,6 +14,13 @@ def index(request):
 def logged_in_index(request, sess):
     return render(request, "web/index.html", {"User":session.objects.get(session_id=sess).user, "in_session":True, "session_id":sess})
 
+def about_page(request):
+    return render(request, "web/about.html")
+
+def about_page_logged(request, sess):
+    return render(request, "web/about.html", {"User":session.objects.get(session_id=sess).user, "in_session":True, "session_id":sess})
+
+
 #def logged_index(request, serial_key)
 def login_view(request):
     if request.method == "GET":
@@ -101,6 +108,8 @@ def specific_device_view(request, sess, deviceId):
         variables = information["variables"]
         status = information["current_status"]
         variable_keys = list(variables.keys())
+        print(variables)
+        print(variable_keys)
         return render(request, "web/device.html", {"User":User, "device": deviceId, "session_id":sess, "variables": variables, "current_status":status, "variable_keys":variable_keys})
         
         

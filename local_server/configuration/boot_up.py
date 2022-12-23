@@ -1,8 +1,8 @@
 #makes sure all parameters are set to run.
-from tools import *
+from configuration.tools import *
 import subprocess
 import json
-from errors import *
+from configuration.errors import *
 import sys
 information = {}
 
@@ -20,7 +20,7 @@ def set_global_server():
 def login_credentials():
     login = {}
     print("Checking Login Credentials")
-    f = open("config.json", "r")
+    f = open("configuration/config.json", "r")
     stuff = json.loads(f.read())
     in_config = None
     try:
@@ -34,16 +34,13 @@ def login_credentials():
     
     information.update({"username": login["username"]})
     information.update({"password": login["password"]})
-    k = open("config.json", "w")
+    k = open("configuration/config.json", "w")
     k.write(json.dumps(information))
     k.close()
-    try:
-        print(information["device_id"])
-    except KeyError:
-        #set device_id
-        d_id = input("Set Device ID: ")
-        information.update({"device_id":d_id})
-        update_config(information)
+    
+    d_id = input("Set Device ID: ")
+    information.update({"device_id":d_id})
+    update_config(information)
     #send message to global servers about login info
     grab_config() #updates information in tools.py
     check_if_registered()
