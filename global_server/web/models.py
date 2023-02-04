@@ -15,7 +15,7 @@ class u(models.Model):
 
     def __str__(self):
         return self.username
-    
+
 
 class device(models.Model):
     device_id = models.TextField()
@@ -26,14 +26,6 @@ class device(models.Model):
     def __str__(self):
         return self.device_id
 
-
-
-class device_statuses(models.Model):
-    status_name = models.TextField()
-    for_device = models.ForeignKey(device, on_delete=models.CASCADE, related_name='dev')
-
-    def __str__(self):
-        return self.status_name
 
 class device_variables(models.Model):
     from_device = models.ForeignKey(device, on_delete=models.CASCADE, related_name='data')
@@ -47,4 +39,4 @@ class device_variables(models.Model):
 
 class current_device_status(models.Model):
     for_device = models.ForeignKey(device, on_delete=models.CASCADE, related_name="device")
-    current_status = models.ForeignKey(device_statuses, on_delete=models.CASCADE, related_name='stat', null=True)
+    current_status = models.TextField(null=True)
