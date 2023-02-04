@@ -85,7 +85,7 @@ def find_nearest_server():
 def send_post_to_global(server_route, request_data): #sends the data to global 
     print("Processing data to global servers")
     req = requests.post("http://"+find_nearest_server()+server_route, json=request_data)
-    print(f"Recieved: {req.json()}")
+    print(req.json())
 
 
 

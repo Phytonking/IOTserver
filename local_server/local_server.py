@@ -7,9 +7,14 @@ import sys
 import os
 import time
 import autonomous
+import asyncio
+import server
+#import subprocess
 
 BU.startup()
 running = True
+#subprocess.run(["python3 server.py"])
+#asyncio.run(server.main())
 #check variables and statuses
 print("PYTHONIOT SYSTEM v.0.0.1 ")
 if sys.argv[1] == "--commands" or sys.argv[1] == "-c":
