@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, "web/index.html", {"User":None})
-    
+
 def logged_in_index(request, sess):
     return render(request, "web/index.html", {"User":session.objects.get(session_id=sess).user, "in_session":True, "session_id":sess})
 
@@ -104,16 +104,15 @@ def specific_device_view(request, sess, deviceId):
         information = pull_from_global(User, deviceId)
         print(list(information.keys()))
         if 'Error' in list(information.keys()):
-            return render(request, "web/device.html", {"User":User, "device": deviceId, "session_id":sess, "error_code": information["error_code"], "error_text":information["Error"], "error":True}) 
+            return render(request, "web/device.html", {"User":User, "device": deviceId, "session_id":sess, "error_code": information["error_code"], "error_text":information["Error"], "error":True})
         variables = information["variables"]
         status = information["current_status"]
         variable_keys = list(variables.keys())
         print(variables)
         print(variable_keys)
         return render(request, "web/device.html", {"User":User, "device": deviceId, "session_id":sess, "variables": variables, "current_status":status, "variable_keys":variable_keys})
-        
-        
 
 
 
-    
+
+
