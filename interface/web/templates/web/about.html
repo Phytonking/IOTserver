@@ -1,7 +1,7 @@
-{% extends 'web/layout.html' %} 
+{% extends 'web/layout.html' %}
 {% load static %}
-{% block header %} 
-    <h4>About</h4>
+{% block header %}
+    <h1>About</h1>
     <style>
         .subtitles {
             color: white;
@@ -9,36 +9,36 @@
     </style>
 {% endblock %}
 
-{% block content %} 
-    <h2 class="content">About</h2>
-    
+{% block content %}
+
     <h3 class="subtitles">The creator</h3>
     <p>The creator of this project is Avi Agola. Commonly known as Phytonking on Github. <br>
         He sees how the internet of things (IoT) is used in most day to day life and wanted to design a free service
         of open-source IoT-programming.
     </p><br>
-    <p style="color: grey; font-family: Georgia, 'Times New Roman', Times, serif;"> - "Iot is becoming a free space to output cretivity, bringing progress to internet techonology." </p>
+    <a href="https://github.com/Phytonking"><h4>Check out PhytonKing on Github</h4></a>
+    <p style="color: grey; font-family: Georgia, 'Times New Roman', Times, serif;"> - "Iot is becoming a free space to output cretivity, bringing progress to internet techonology" (Avi Agola).</p>
 
     <h3 class="subtitles">The system</h3>
     <p>The project has 3 components: </p>
     <ul>
         <li>
             <div class="w3-card w3-blue-grey">
-                <h5 style="text-align: center;">Device</h5><br>
-                <p>The device which could generate data and would be operated remotely. <br> 
-                Coded in python. The device can send signals to the global server to the Cloud servers for the most up-to-date data. </p>
+                <h3 style="text-align: center;">Device</h3><br>
+                <h4>The device which could generate data and would be operated remotely. <br>
+                Coded in python. The device can send signals to the global server to the Cloud servers for the most up-to-date data. </h4>
             </div>
         </li>
         <li>
             <div class="w3-card w3-dark-grey">
-                <h5 style="text-align: center;">Cloud Server</h5><br>
-                <p>This server operates independently and recieves and sends data to the device and interface server. </p>
+                <h3 style="text-align: center;">Cloud Server</h3><br>
+                <h4>This server operates independently and recieves and sends data to the device and interface server. </h4>
             </div>
         </li>
         <li>
             <div class="w3-card w3-grey">
-                <h5 style="text-align: center;">Interface Server</h5><br>
-                <p>This website is the interface server, where you can access your device's data and be able to send commands to your devices (Work in progress). </p>
+                <h3 style="text-align: center;">Interface Server</h3><br>
+                <h4>This website is the interface server, where you can access your device's data and be able to send commands to your devices (Work in progress). </h4>
             </div>
         </li>
     </ul>

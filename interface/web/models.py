@@ -13,6 +13,9 @@ class u(models.Model):
     account_server_origin = models.TextField()
     logged_in = models.BooleanField(null=True)
 
+    def __str__(self):
+        return self.username
+
 class device(models.Model):
     device_id = models.TextField()
     device_name = models.TextField()
